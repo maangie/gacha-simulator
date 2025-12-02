@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from dash import Dash, html, dcc, Input, Output, State
 import plotly.graph_objs as go
@@ -173,5 +174,9 @@ def update_simulation(n_clicks, prob_percent, cost_yen, n_sims, hardcap):
   return fig, status_text, ""
 
 if __name__ == "__main__":
-  "uv run main.py で起動"
-  app.run(debug=True)
+  port = int(os.environ.get("PORT", 8050))
+  app.run(
+    debug=False,          # 本番なので False 推奨
+    host="0.0.0.0",       # 外部からアクセスできるように
+    port=port,
+  )
