@@ -17,66 +17,94 @@ app = Dash(__name__)
 app.title = "ガチャ期待値＆爆死シミュレーター"
 
 app.layout = html.Div(
-  style={"maxWidth": "800px", "margin": "auto", "fontFamily": "system-ui"},
+  className="app-shell",
   children=[
-    html.H1("ガチャ期待値＆爆死シミュレーター"),
-    html.P("SSRの排出率や課金額を変えて、爆死リスクを可視化してみよう。"),
-
-    html.Hr(),
+    html.Div(
+      className="section header-section",
+      children=[
+        html.H1("ガチャ期待値＆爆死シミュレーター", className="page-title"),
+        html.P("SSRの排出率や課金額を変えて、爆死リスクを可視化してみよう。", className="page-lead"),
+      ]
+    ),
 
     html.Div(
-      style={"display": "flex", "gap": "2rem", "flexWrap": "wrap"},
+      className="section",
       children=[
         html.Div(
-          style={"flex": "1 1 250px"},
+          className="layout-grid",
           children=[
-            html.Label("SSR排出率 (%)"),
-            dcc.Slider(
-              id="prob-slider",
-              min=0.1,
-              max=10,
-              step=0.1,
-              value=3,
-              marks={0.1: "0.1", 1: "1", 3: "3", 5: "5", 10: "10"},
-              tooltip={"placement": "bottom", "always_visible": True},
+            html.Div(
+              className="control-card",
+              children=[
+                html.Div(
+                  className="control-field",
+                  children=[
+                    html.Label("SSR排出率 (%)", className="control-label"),
+                    dcc.Slider(
+                      id="prob-slider",
+                      min=0.1,
+                      max=10,
+                      step=0.1,
+                      value=3,
+                      marks={0.1: "0.1", 1: "1", 3: "3", 5: "5", 10: "10"},
+                      tooltip={"placement": "bottom", "always_visible": True},
+                      className="control-slider",
+                    ),
+                  ]
+                ),
+                html.Div(
+                  className="control-field",
+                  children=[
+                    html.Label("1回あたりの課金額 (円)", className="control-label"),
+                    dcc.Input(id="cost-input", type="number", value=300, min=1, step=10, className="control-input"),
+                  ]
+                ),
+                html.Div(
+                  className="control-field",
+                  children=[
+                    html.Label("シミュレーション回数", className="control-label"),
+                    dcc.Slider(
+                      id="nsims-slider",
+                      min=1000,
+                      max=50000,
+                      step=1000,
+                      value=10000,
+                      marks={1000: "1k", 10000: "10k", 50000: "50k"},
+                      tooltip={"placement": "bottom", "always_visible": True},
+                      className="control-slider",
+                    ),
+                  ]
+                ),
+                html.Div(
+                  className="control-field",
+                  children=[
+                    html.Label("爆死とみなす上限回数", className="control-label"),
+                    dcc.Input(id="hardcap-input", type="number", value=200, min=1, step=10, className="control-input"),
+                  ]
+                ),
+                html.Button("シミュレーション実行", id="run-button", className="primary-button"),
+                html.Div(id="error-msg", className="error-msg"),
+              ]
             ),
-            html.Br(),
-
-            html.Label("1回あたりの課金額 (円)"),
-            dcc.Input(id="cost-input", type="number", value=300, min=1, step=10, style={"width": "100%"}),
-            html.Br(), html.Br(),
-
-            html.Label("シミュレーション回数"),
-            dcc.Slider(
-              id="nsims-slider",
-              min=1000,
-              max=50000,
-              step=1000,
-              value=10000,
-              marks={1000: "1k", 10000: "10k", 50000: "50k"},
-              tooltip={"placement": "bottom", "always_visible": True},
-            ),
-            html.Br(),
-
-            html.Label("爆死とみなす上限回数"),
-            dcc.Input( id="hardcap-input", type="number", value=200, min=1, step=10, style={"width": "100%"} ),
-            html.Br(),
-            html.Br(),
-
-            html.Button("シミュレーション実行", id="run-button"),
-            html.Div(id="error-msg", style={"color": "red", "marginTop": "0.5rem"}),
+            html.Div(
+              className="stats-card",
+              children=[
+                html.H3("統計まとめ", className="section-title"),
+                html.Div(id="stats-output", className="stats-output")
+              ]
+            )
           ]
-        ),
-        html.Div(
-          style={"flex": "1 1 300px"},
-          children=[html.H3("統計まとめ"), html.Div(id="stats-output")]
         )
       ]
     ),
 
-    html.Hr(),
-    html.H3("SSRが初めて出るまでに必要な回数の分布"),
-    dcc.Graph(id="hist-graph"),
+    html.Div(
+      className="section graph-section",
+      children=[
+        html.H3("SSRが初めて出るまでに必要な回数の分布", className="section-title"),
+        dcc.Graph(id="hist-graph", className="histogram-graph"),
+      ]
+    ),
   ]
 )
 
