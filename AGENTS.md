@@ -27,7 +27,7 @@
 - 作業を始めるときは必ず main から作業ブランチを切る（例: `git checkout -b feature/responsive`）；直接 main にはコミットしない。
 - Commit messages: clear, imperative verbs (e.g., `Tighten input validation`); no strict convention detected.
 - PRs: include intent, key changes, run steps (`uv run main.py`), and screenshots/gifs for UI tweaks.
-- Link related issues and flag risk areas (probability math, layout changes); note follow-ups explicitly.
+- Flag risk areas (probability math, layout changes); note follow-ups explicitly.
 
 ## Security & Configuration Tips
 - The app reads `PORT`; default is 8050. Document any new env vars you introduce.
