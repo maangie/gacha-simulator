@@ -206,7 +206,7 @@ def update_simulation(n_clicks, prob_percent, cost_yen, n_sims, hardcap):
     html.P(f"90%の人がこの回数までには出る: {p90_trials:.1f} 回 ≒ {p90_cost:,.0f} 円"),
   ]
 
-  if bust_prob:
+  if bust_prob is not None:
     status_text.append(
       html.P(f"{hardcap} 回回してもSSRが出ない確率: {bust_prob * 100:.2f} %")
     )
