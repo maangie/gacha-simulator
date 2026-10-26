@@ -215,7 +215,7 @@ def update_simulation(n_clicks, prob_percent, cost_yen, n_sims, hardcap):
   max_display = int(np.percentile(trials, 99.9))
   clipped = trials[trials <= max_display]
 
-  hist = go.Histogram(x=trials, xbins=dict(start=0.5, end=max_display + 0.5, size=1))
+  hist = go.Histogram(x=clipped, xbins=dict(start=0.5, end=max_display + 0.5, size=1))
 
   layout = go.Layout(
     xaxis_title="SSRが初めて出るまでのガチャ回数", yaxis_title="頻度", bargap=0.05
