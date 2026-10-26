@@ -23,10 +23,12 @@ app.layout = html.Div(
       className="section header-section",
       children=[
         html.H1("ガチャ期待値＆爆死シミュレーター", className="page-title"),
-        html.P("SSRの排出率や課金額を変えて、爆死リスクを可視化してみよう。", className="page-lead"),
-      ]
+        html.P(
+          "SSRの排出率や課金額を変えて、爆死リスクを可視化してみよう。",
+          className="page-lead",
+        ),
+      ],
     ),
-
     html.Div(
       className="section",
       children=[
@@ -50,14 +52,21 @@ app.layout = html.Div(
                       tooltip={"placement": "bottom", "always_visible": True},
                       className="control-slider",
                     ),
-                  ]
+                  ],
                 ),
                 html.Div(
                   className="control-field",
                   children=[
                     html.Label("1回あたりの課金額 (円)", className="control-label"),
-                    dcc.Input(id="cost-input", type="number", value=300, min=1, step=10, className="control-input"),
-                  ]
+                    dcc.Input(
+                      id="cost-input",
+                      type="number",
+                      value=300,
+                      min=1,
+                      step=10,
+                      className="control-input",
+                    ),
+                  ],
                 ),
                 html.Div(
                   className="control-field",
@@ -73,53 +82,64 @@ app.layout = html.Div(
                       tooltip={"placement": "bottom", "always_visible": True},
                       className="control-slider",
                     ),
-                  ]
+                  ],
                 ),
                 html.Div(
                   className="control-field",
                   children=[
                     html.Label("爆死とみなす上限回数", className="control-label"),
-                    dcc.Input(id="hardcap-input", type="number", value=200, min=1, step=10, className="control-input"),
-                  ]
+                    dcc.Input(
+                      id="hardcap-input",
+                      type="number",
+                      value=200,
+                      min=1,
+                      step=10,
+                      className="control-input",
+                    ),
+                  ],
                 ),
-                html.Button("シミュレーション実行", id="run-button", className="primary-button"),
+                html.Button(
+                  "シミュレーション実行", id="run-button", className="primary-button"
+                ),
                 html.Div(id="error-msg", className="error-msg"),
-              ]
+              ],
             ),
             html.Div(
               className="stats-card",
               children=[
                 html.H3("統計まとめ", className="section-title"),
-                html.Div(id="stats-output", className="stats-output")
-              ]
-            )
-          ]
+                html.Div(id="stats-output", className="stats-output"),
+              ],
+            ),
+          ],
         )
-      ]
+      ],
     ),
-
     html.Div(
       className="section graph-section",
       children=[
         html.H3("SSRが初めて出るまでに必要な回数の分布", className="section-title"),
         dcc.Graph(id="hist-graph", className="histogram-graph"),
-      ]
+      ],
     ),
-  ]
+  ],
 )
 
 @app.callback(
-  [Output("hist-graph", "figure"), Output("stats-output", "children"), Output("error-msg", "children")],
+  [
+    Output("hist-graph", "figure"),
+    Output("stats-output", "children"),
+    Output("error-msg", "children"),
+  ],
   [Input("run-button", "n_clicks")],
   [
     State("prob-slider", "value"),
     State("cost-input", "value"),
     State("nsims-slider", "value"),
-    State("hardcap-input", "value")
+    State("hardcap-input", "value"),
   ],
-  prevent_initial_call=True
+  prevent_initial_call=True,
 )
-
 def update_simulation(n_clicks, prob_percent, cost_yen, n_sims, hardcap):
   """
   ガチャの確率シミュレーションを実行し、結果を表示用データに変換するコールバック関数。
@@ -187,7 +207,9 @@ def update_simulation(n_clicks, prob_percent, cost_yen, n_sims, hardcap):
   ]
 
   if bust_prob:
-    status_text.append(html.P(f"{hardcap} 回回してもSSRが出ない確率: {bust_prob * 100:.2f} %"))
+    status_text.append(
+      html.P(f"{hardcap} 回回してもSSRが出ない確率: {bust_prob * 100:.2f} %")
+    )
 
   # ヒストグラム(長すぎる尻尾はある程度切る)
   max_display = int(np.percentile(trials, 99.9))
@@ -195,7 +217,9 @@ def update_simulation(n_clicks, prob_percent, cost_yen, n_sims, hardcap):
 
   hist = go.Histogram(x=trials, xbins=dict(start=0.5, end=max_display + 0.5, size=1))
 
-  layout = go.Layout(xaxis_title="SSRが初めて出るまでのガチャ回数", yaxis_title="頻度", bargap=0.05)
+  layout = go.Layout(
+    xaxis_title="SSRが初めて出るまでのガチャ回数", yaxis_title="頻度", bargap=0.05
+  )
 
   fig = go.Figure(data=[hist], layout=layout)
 
@@ -204,7 +228,7 @@ def update_simulation(n_clicks, prob_percent, cost_yen, n_sims, hardcap):
 if __name__ == "__main__":
   port = int(os.environ.get("PORT", 8050))
   app.run(
-    debug=False,          # 本番なので False 推奨
-    host="0.0.0.0",       # 外部からアクセスできるように
+    debug=False,  # 本番なので False 推奨
+    host="0.0.0.0",  # 外部からアクセスできるように
     port=port,
   )
