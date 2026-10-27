@@ -63,6 +63,17 @@ http://127.0.0.1:8050/
 
 ---
 
+🧪 テスト
+
+```bash
+uv sync
+uv run pytest
+```
+
+main への push と Pull Request では、GitHub Actions（`.github/workflows/test.yml`）が同じテストを自動で実行します。
+
+---
+
 📊 統計の見方
 
 | 表示項目   | 意味                                     |
@@ -82,7 +93,7 @@ http://127.0.0.1:8050/
 
 - SSRが出るまでの試行回数は「幾何分布」に従います。
 - NumPy の `np.random.geometric()` を利用しています。
-- 極端に大きな値（長い尻尾）は可視化のために 99 パーセンタイルでカットしています。
+- 極端に大きな値（長い尻尾）は可視化のために 99.9 パーセンタイルでカットしています。
 
 ---
 
@@ -98,7 +109,12 @@ http://127.0.0.1:8050/
 ```
 .
 ├── main.py
-└── pyproject.toml
+├── pyproject.toml
+├── uv.lock
+├── requirements.txt
+├── tests/
+│   └── test_main.py
+└── .github/workflows/test.yml
 ```
 
 ---

@@ -11,7 +11,7 @@
 - Install deps: `uv sync` (preferred) or `uv pip install -r requirements.txt`.
 - Run tests: `uv run pytest`（開発用依存は `uv sync` で入る）。
 - Run locally: `uv run main.py` (respects `PORT`, defaults to 8050).
-- Prod-like serve: `uv run gunicorn main:app.server --bind 0.0.0.0:8050 --workers 2`.
+- Prod-like serve: `uv run gunicorn main:app --bind 0.0.0.0:8050 --workers 2`.
 - Update pinned deps after changes: `uv pip compile pyproject.toml -o requirements.txt`.
 
 ## Coding Style & Naming Conventions
