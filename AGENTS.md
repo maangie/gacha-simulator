@@ -28,7 +28,7 @@
 - PR本文に `Closes #<issue番号>` などのクローズキーワードを必ず含め、マージ時に対応Issueが自動で閉じるようにする。
 - Commit messages: clear, imperative verbs (e.g., `Tighten input validation`); no strict convention detected.
 - PRs: include intent, key changes, run steps (`uv run main.py`), and screenshots/gifs for UI tweaks.
-- Link related issues and flag risk areas (probability math, layout changes); note follow-ups explicitly.
+- Flag risk areas (probability math, layout changes); note follow-ups explicitly.
 - マージ後は `git fetch -p` で不要なリモートブランチを整理し、必要に応じて `git push origin --delete <branch>` でリモートブランチを削除する。
 
 ## Security & Configuration Tips
