@@ -4,10 +4,12 @@
 - `main.py`: Dash app entrypoint; contains layout, Japanese UI copy, and `simulate_gacha` / `update_simulation` logic. Add new callbacks here until a refactor splits modules.
 - `pyproject.toml` and `uv.lock`: Dependency sources of truth. `requirements.txt` is generated; avoid manual edits.
 - `README.md`: User-facing overview and setup notes. Update when behavior, commands, or UI text change.
-- Tests are not yet present. If you add them, prefer `tests/` with `pytest` and keep fixtures small and deterministic.
+- `tests/`: `pytest` のテスト（`tests/test_main.py`）。フィクスチャは小さく決定的に保つ。
+- `.github/workflows/test.yml`: GitHub Actions の CI。main への push と Pull Request で `uv run pytest` を実行する。
 
 ## Build, Test, and Development Commands
 - Install deps: `uv sync` (preferred) or `uv pip install -r requirements.txt`.
+- Run tests: `uv run pytest`（開発用依存は `uv sync` で入る）。
 - Run locally: `uv run main.py` (respects `PORT`, defaults to 8050).
 - Prod-like serve: `uv run gunicorn main:app.server --bind 0.0.0.0:8050 --workers 2`.
 - Update pinned deps after changes: `uv pip compile pyproject.toml -o requirements.txt`.
@@ -19,9 +21,10 @@
 - Add concise docstrings for new public functions and validations。
 
 ## Testing Guidelines
-- Manual smoke for now: `uv run main.py` and verify sliders/inputs update the histogram and stats at `http://127.0.0.1:8050/` without errors.
-- Exercise edge cases (very small/large probabilities, invalid inputs) to confirm error handling and clipping logic.
-- Future tests: name files `test_*.py`, seed randomness where needed, and avoid network or time-dependent behavior.
+- 自動テスト: `uv run pytest` を実行する。コミット・PR の前に必ず通ること（CI でも同じコマンドが走る）。
+- テストは `tests/test_*.py` に置き、乱数は seed を固定し、ネットワークや時刻に依存させない。
+- 振る舞いや入力欄を変えたときは、境界値（極端に小さい/大きい確率、無効な入力、入力欄の `min`/`step` との整合）を確認するテストを追加する。
+- UI の変更は、自動テストに加えて手動でも確認する: `uv run main.py` を起動し、`http://127.0.0.1:8050/` でスライダーや入力欄の操作がヒストグラムと統計に反映され、エラーが出ないことを見る。
 
 ## Commit & Pull Request Guidelines
 - 作業を始めるときは必ず main から作業ブランチを切る（例: `git checkout -b feature/responsive`）；直接 main にはコミットしない。
