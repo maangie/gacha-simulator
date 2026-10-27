@@ -25,7 +25,7 @@ Dash を使って「SSRが出るまでに何回ガチャを回すことになる
 
 ## 🛠 使用技術
 
-- Python 3.10+
+- Python 3.14+
 - Dash
 - Plotly
 - NumPy
