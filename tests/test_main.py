@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from main import simulate_gacha, update_simulation
+from main import app, simulate_gacha, update_simulation
 
 
 def stat_lines(stats):
@@ -119,3 +119,17 @@ class TestUpdateSimulation:
     x = fig.data[0].x
     assert len(x) < 10000
     assert max(x) <= fig.data[0].xbins.end
+
+
+class TestNumberInputs:
+  """数値入力欄の min / step と値の整合性のテスト。"""
+
+  @pytest.mark.parametrize("component_id", ["cost-input", "hardcap-input"])
+  def test_default_and_integers_are_valid(self, component_id):
+    """既定値と任意の整数が、min / step の組み合わせで有効な値になること。
+
+    無効な値だと、ブラウザの数値入力は Dash に None を渡してしまう。
+    """
+    component = app.layout[component_id]
+    for value in (component.value, 255, 100000, 100001):
+      assert (value - component.min) % component.step == 0
